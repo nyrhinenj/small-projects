@@ -140,7 +140,7 @@ function jackpot() {
         time();
     }
     // when the jackpot is achieved, print the time taken
-    console.log(`It took ${time()} years`);
+    console.log(`It took ${time()} years!`);
 }
 
 // function that checks the lottery row when "log" is in the input
@@ -152,7 +152,7 @@ function jackpotLog() {
         user();
         lottoNumber();
         // print the user's and the generated lottery numbers
-        console.log(`User: ${input.join(' ')}`);
+        console.log(`User:   ${input.join(' ')}`);
         console.log(`Random: ${random.join(' ')}`);
         // convert the array contents to numbers for comparison, and change them from format 01 to 1. Compare the numbers and sort them from smallest to largest
         let sortedUser = input.map(num => parseInt(num, 10)).sort((a, b) => a - b);
