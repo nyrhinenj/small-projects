@@ -1,24 +1,24 @@
-// alustetaan tarvittavat muuttujat
+// initialize necessary variables
 let input = [];
 let random = [];
-let args = process.argv.slice(2); // poistetaan syötteestä kaksi ensimmäistä indexiä
+let args = process.argv.slice(2); // remove the first two indexes from the input
 let years = 0;
 let week = 0;
 
-// hoidetaan syötteen validaatio, onko syötteessä "log vai ei"
+// handle input validation, whether "log" is in the input or not
 if (args.includes('log')) {
     validateLog();
 } else {
     validate();
 }
 
-// validointi, jos syötteessä ei ole "log"
+// validation if "log" is not in the input
 function validate() {
-    // tarkistetaan, että tarpeeksi monta syötettä annettu
+    // check that enough inputs are provided
     if (args.length !== 7) {
         console.log("Error: Give 7 values");
     } else {
-        // tarkistetaan, että kaikki syötteet ovat numeroita
+        // check that all inputs are numbers
         let allNumbers = true;
         for (let i = 0; i < args.length; i++) {
             if (isNaN(parseInt(args[i]))) {
@@ -26,17 +26,17 @@ function validate() {
                 allNumbers = false;
                 break;
             }
-            // tarkistetaan, että annetut numerot on väliltä 1-40
+            // check that the numbers provided are between 1 and 40
             if (parseInt(args[i]) < 1 || parseInt(args[i]) > 40) {
                 console.log("Error: all values must be from range 1-40");
                 allNumbers = false;
                 break;
             }
         }
-        // tarkistetaan, että käyttäjä antaa vain uniikkeja numeroita
+        // check that the user provides only unique numbers
         if (allNumbers) {
             let noDuplicates = true;
-            // käydään läpi kaikki taulukon arvot ja katsotaan löytyykö duplikaatteja
+            // iterate through all array values and check for duplicates
             for (let i = 0; i < args.length; i++) {
                 for (let j = i + 1; j < args.length; j++) {
                     if (args[i] == args[j]) {
@@ -47,7 +47,7 @@ function validate() {
                 }
                 if (!noDuplicates) break;
             }
-            // jos kaikki on kunnossa, kutsutaan jackpot-funktiota
+            // if everything is okay, call the jackpot function
             if (noDuplicates) {
                 jackpot();
             }
@@ -55,15 +55,15 @@ function validate() {
     }
 }
 
-// validointi, jos syötteessä on "log"
+// validation if "log" is in the input
 function validateLog() {
-    // poistetaan taulukon viimeisen indexin sisältö eli sana "log", jotta vertailu helpompaa
+    // remove the last index of the array, i.e., the word "log", to simplify comparison
     args.pop();
-    // tarksitetaan, että oikea määrä syötteitä annettu
+    // check that the correct number of inputs are provided
     if (args.length !== 7) {
         console.log("Error: Give 7 values");
     } else {
-        // tarkistetaan, että annetut syötteet on numeroita
+        // check that the provided inputs are numbers
         let allNumbers = true;
         for (let i = 0; i < args.length; i++) {
             if (isNaN(parseInt(args[i]))) {
@@ -71,114 +71,113 @@ function validateLog() {
                 allNumbers = false;
                 break;
             }
-            // tarkistetaan, että annetut numerot on väliltä 1-40
+            // check that the numbers provided are between 1 and 40
             if (parseInt(args[i]) < 1 || parseInt(args[i]) > 40) {
                 console.log("Error: all values must be from range 1-40");
                 allNumbers = false;
                 break;
             }
         }
-        // jos syöte on oikea, kutsutaan jackpotLog funktiota
+        // if the input is correct, call the jackpotLog function
         if (allNumbers) {
             jackpotLog();
         }
     }
 }
 
-// käydään käyttäjän syöte läpi
+// process the user's input
 function user() {
-    // tyhjennetään taulukko, jotta funktiota kutsuessa, uudet tiedot eivät tallennu aina uudestaan toistensa perään vaan ne tallentuvat tyhjään taulukoon
+    // clear the array to prevent new data from being appended to the existing data
     input = [];
-    // käydään läpi jokainen käyttäjän antama argumentti ja tallennetaan ne oikeassa muodossa taulukkoon
+    // process each argument provided by the user and store them in the correct format in the array
     for (let i = 0; i < args.length; i++) {
         let number = parseInt(args[i]);
-        // tarkistetaan, onko numero pienempää kuin 10. Jos on, lisätään eteen 0, jos ei lisätään se merkkijonona taulukkoon
+        // check if the number is less than 10. If so, prepend a 0; otherwise, add it as a string to the array
         let formattedNumber = number < 10 ? '0' + number : number.toString();
         input.push(formattedNumber)
     }
-    return input; // palautetaan muodostunut taulukko
+    return input; // return the formatted array
 }
 
-// arvotaan lottorivin oikeat numerot
+// generate the winning lottery numbers
 function lottoNumber() {
-    // tyhjennetään taulukko, jotta funktiota kutsuessa, uudet tiedot eivät tallennu aina uudestaan toistensa perään vaan ne tallentuvat tyhjään taulukoon
+    // clear the array to prevent new data from being appended to the existing data
     random = [];
-    // arvotaan 7 numeroa
+    // draw 7 numbers
     while (random.length < 7) {
         let randomNumber = Math.floor(Math.random() * 40) + 1;
-        // tarkistetaan, onko numero pienempää kuin 10. Jos on, lisätään eteen 0, jos ei lisätään se merkkijonona taulukkoon
+        // check if the number is less than 10. If so, prepend a 0; otherwise, add it as a string to the array
         let formattedNumber = randomNumber < 10 ? '0' + randomNumber : randomNumber.toString();
-        // tarkistetaan vielä, että arvottua numeroa ei ole jo taulukossa. Jos numero löytyy taulukosta, ei sitä lisät
+        // ensure the drawn number is not already in the array. If it is, do not add it
         if (!random.includes(formattedNumber)) {
             random.push(formattedNumber);
         }
     }
-    return random; // palautetaan muodostunut taulukko
+    return random; // return the generated array
 }
 
-// funktio, joka tarkistaa lottorivin
+// function that checks the lottery row
 function jackpot() {
-    // alustetaan tarvittavat muuttujat
+    // initialize necessary variables
     let gotJackpot = 7;
     let highscore = 0;
     let correct = 0;
-    // käydään taulukoita läpi, kunnes saadaan jackpot
+    // iterate through arrays until jackpot is achieved
     while (highscore !== gotJackpot) {
-        // kutsutaan funktioita, jotka antavat uudet taulukot
+        // call functions that provide new arrays
         user();
         lottoNumber();
-        // varmistetaan, että oikein numeroiden määrä on 0, ennen numeroiden vertailua
+        // ensure that the number of correct numbers is 0 before comparing numbers
         correct = 0;
-        // verrataan taulukoita, löytyykö niistä samoja numeroita
+        // compare arrays to see if they contain the same numbers
         correct = input.filter(num => random.includes(num)).length;
-        // jos oikeiden numeroiden määrä on suurempi kuin ennätys, päivitetään ennätys, ja tulostetaan uusi oikeiden numeroiden määrä
+        // if the number of correct numbers is greater than the highscore, update the highscore and print the new number of correct numbers
         if (correct > highscore) {
             highscore = correct;
             console.log(`You got ${highscore} correct`);
         }
-        // kutsutaan aika funktiota jokaisen vertailun jälkeen, jotta tiedetään kauanko jackpotin saavuttamisessa kestää
+        // call the time function after each comparison to track how long it takes to achieve the jackpot
         time();
-
     }
-    // kun jackpot saadaan, tulostetaan siihen kulunut aika näkyviin
+    // when the jackpot is achieved, print the time taken
     console.log(`It took ${time()} years`);
 }
 
-// funktio, joka tarkistaa lottorivin, kun käyttäjä on antanut syötteeseen "log"
+// function that checks the lottery row when "log" is in the input
 function jackpotLog() {
     let gotJackpot = false;
-    // toistetaan vertailu, kunnes saadaan jackpot
+    // repeat the comparison until the jackpot is achieved
     while (!gotJackpot) {
-        // kutsutaan funktioita, jotka antavat uudet taulukot
+        // call functions that provide new arrays
         user();
         lottoNumber();
-        // tulostetaan käyttäjän antama ja oikea lottorivi näkyviin
+        // print the user's and the generated lottery numbers
         console.log(`User: ${input.join(' ')}`);
         console.log(`Random: ${random.join(' ')}`);
-        // muutetaan taulukoiden sisällöt numeroiksi vertailua varten ja muutetaan ne muodosta 01 muotoon 1. Vertaillaan numeroiden suhdetta toisiinsa ja järjestetään ne pienimmästä suurimpaan
+        // convert the array contents to numbers for comparison, and change them from format 01 to 1. Compare the numbers and sort them from smallest to largest
         let sortedUser = input.map(num => parseInt(num, 10)).sort((a, b) => a - b);
         let sortedLottoNumber = random.map(num => parseInt(num, 10)).sort((a, b) => a - b);
-        // verrataan taulukkojen arvoja toisiinsa indeksi kerrallaan. Jos yksikin numero on eri, palautetaan false, jos kaikki on samat, palautetaan true
+        // compare the array values index by index. If any number is different, return false; if all are the same, return true
         gotJackpot = sortedUser.every((num, index) => num === sortedLottoNumber[index]);
-        //lasketaan jackpotin saamiseen kulunut aika
+        // calculate the time taken to achieve the jackpot
         if (!gotJackpot) {
             time();
         } else {
-            // tulostetaan kulunut aika näkyviin
+            // print the time taken
             console.log(`It took ${time()} years!`)
         }
     }
 }
 
-// aika funktio, joka laskee jackpotin saamiseen kulunutta aikaa
+// time function that calculates the time taken to achieve the jackpot
 function time() {
-    // funktiota kutsuttaessa lisätään kuluneeseen aikaan viikko lisää
+    // increment the elapsed time by one week each time the function is called
     week++;
-    // jos on kulunut 52 vko, lisätään aika kuluneisiin vuosiin ja nollataan viikot
+    // if 52 weeks have passed, add the time to the years and reset weeks
     if (week === 52) {
         years++;
         week = 0;
     }
-    // palautetaan kulunut aika vuosina ylöspäin pyöristettynä
+    // return the elapsed time rounded up to the nearest year
     return Math.ceil(years + week / 52);
 }
