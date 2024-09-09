@@ -7,9 +7,15 @@ let week = 0;
 
 // handle input validation, whether "log" is in the input or not
 if (args.includes('log')) {
-    validateLog();
+    // remove the last index of the array, i.e., the word "log", to simplify comparison
+    args.pop();
+    if (validate() === true) {
+        jackpotLog();
+    }
 } else {
-    validate();
+    if (validate() === true) {
+        jackpot();
+    }
 }
 
 // validation if "log" is not in the input
@@ -49,41 +55,12 @@ function validate() {
             }
             // if everything is okay, call the jackpot function
             if (noDuplicates) {
-                jackpot();
+                return true;
             }
         }
     }
 }
 
-// validation if "log" is in the input
-function validateLog() {
-    // remove the last index of the array, i.e., the word "log", to simplify comparison
-    args.pop();
-    // check that the correct number of inputs are provided
-    if (args.length !== 7) {
-        console.log("Error: Give 7 values");
-    } else {
-        // check that the provided inputs are numbers
-        let allNumbers = true;
-        for (let i = 0; i < args.length; i++) {
-            if (isNaN(parseInt(args[i]))) {
-                console.log("Error: all values must be numbers");
-                allNumbers = false;
-                break;
-            }
-            // check that the numbers provided are between 1 and 40
-            if (parseInt(args[i]) < 1 || parseInt(args[i]) > 40) {
-                console.log("Error: all values must be from range 1-40");
-                allNumbers = false;
-                break;
-            }
-        }
-        // if the input is correct, call the jackpotLog function
-        if (allNumbers) {
-            jackpotLog();
-        }
-    }
-}
 
 // process the user's input
 function user() {
