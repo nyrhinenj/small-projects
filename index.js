@@ -53,7 +53,7 @@ function validate() {
                 }
                 if (!noDuplicates) break;
             }
-            // if everything is okay, call the jackpot function
+            // if everything is okay, return true
             if (noDuplicates) {
                 return true;
             }
